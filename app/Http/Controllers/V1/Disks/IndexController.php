@@ -13,12 +13,18 @@ final class IndexController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $disks = Disk::query()
-            ->where('user_id', auth()->id());
+        $disks = Disk::query()->where(
+            column: 'user_id',
+            operator: '=',
+            value: auth()->id(),
+        );
 
         if ($request->has('include')) {
             $disks->with(
-                relations: explode(',', $request->input('include')),
+                relations: explode(
+                    separator: ',',
+                    string: $request->string('include')->toString(),
+                ),
             );
         }
 

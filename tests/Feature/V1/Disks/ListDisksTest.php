@@ -6,7 +6,6 @@ use App\Http\Controllers\V1\Disks\IndexController;
 use App\Models\Disk;
 use App\Models\File;
 use App\Models\User;
-
 use Illuminate\Testing\Fluent\AssertableJson;
 
 use function Pest\Laravel\actingAs;
@@ -91,8 +90,17 @@ test('the response can include a list of files', function (): void {
         ]),
     )->assertJson(
         fn (AssertableJson $json) => $json
-            ->each(fn (AssertableJson $json) => $json
-                ->has('files')->etc()
+            ->each(
+                fn (AssertableJson $json) => $json
+                    ->has('files')->etc()
             ),
+    );
+})->group('api', 'disks');
+
+test('a user without a verified email will get an conflict response', function (): void {
+    actingAs(User::factory()->create(['email_verified_at' => null]))->getJson(
+        uri: action(IndexController::class),
+    )->assertStatus(
+        status: Response::HTTP_CONFLICT,
     );
 })->group('api', 'disks');

@@ -28,6 +28,11 @@ final class FileResource extends JsonResource
             'last_modified' => new DateResource(
                 resource: $this->resource->last_modified_at,
             ),
+            'disk' => new DiskResource(
+                resource: $this->whenLoaded(
+                    relationship: 'disk',
+                ),
+            ),
         ];
     }
 }
