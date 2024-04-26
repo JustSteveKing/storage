@@ -22,7 +22,7 @@ final class PasswordResetLinkController
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink(
-            $request->only('email')
+            $request->only('email'),
         );
 
         if (Password::RESET_LINK_SENT !== $status) {
@@ -32,7 +32,7 @@ final class PasswordResetLinkController
         }
 
         return new JsonResponse(
-            data: ['status' => __($status)]
+            data: ['status' => __($status)],
         );
     }
 }

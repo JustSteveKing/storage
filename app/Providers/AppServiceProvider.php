@@ -16,6 +16,7 @@ final class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         ResetPassword::createUrlUsing(
+            /** @phpstan-ignore-next-line  */
             callback: static fn (CanResetPassword $notifiable, string $token) => config('app.frontend_url') . "/password-reset/{$token}?email={$notifiable->getEmailForPasswordReset()}",
         );
     }

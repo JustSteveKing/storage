@@ -18,7 +18,7 @@ final class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->file(),
+            'name' => $this->faker->sentence(),
             'extension' => $this->faker->fileExtension(),
             'mime' => $this->faker->mimeType(),
             'visibility' => $this->faker->randomElement(['public', 'private']),

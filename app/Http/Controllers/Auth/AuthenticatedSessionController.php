@@ -14,8 +14,7 @@ final readonly class AuthenticatedSessionController
 {
     public function __construct(
         private AuthManager $auth,
-    ) {
-    }
+    ) {}
 
     public function store(LoginRequest $request): JsonResponse
     {

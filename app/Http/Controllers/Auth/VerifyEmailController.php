@@ -14,14 +14,13 @@ final readonly class VerifyEmailController
 {
     public function __construct(
         private AuthManager $auth,
-    ) {
-    }
+    ) {}
 
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
         if ($this->auth->user()->hasVerifiedEmail()) {
             return Redirect::intended(
-                default: config('app.frontend_url') . '/dashboard?verified=1'
+                default: config('app.frontend_url') . '/dashboard?verified=1',
             );
         }
 
@@ -30,7 +29,7 @@ final readonly class VerifyEmailController
         }
 
         return Redirect::intended(
-            default: config('app.frontend_url') . '/dashboard?verified=1'
+            default: config('app.frontend_url') . '/dashboard?verified=1',
         );
     }
 }

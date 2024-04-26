@@ -36,7 +36,7 @@ final class NewPasswordController
                 ])->save();
 
                 event(new PasswordReset($user));
-            }
+            },
         );
 
         /** @var string $status */
