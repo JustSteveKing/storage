@@ -47,6 +47,14 @@ final class DiskPolicy
         );
     }
 
+    public function upload(User $user, Disk $disk): bool
+    {
+        return $this->ownsDisk(
+            user: $user,
+            disk: $disk,
+        );
+    }
+
     private function verifiedEmail(User $user): bool
     {
         return $user->hasVerifiedEmail();

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 // get all files for a specified disk
 Route::get('{disk}', Files\IndexController::class)->name('index');
+Route::post('{disk}', Files\StoreController::class)->name('store');
 // upload a new file to a specified disk
 // get details of a specific file
 // delete a file from a disk
