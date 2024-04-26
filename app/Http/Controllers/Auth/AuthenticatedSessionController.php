@@ -1,38 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-class AuthenticatedSessionController extends Controller
+final readonly class AuthenticatedSessionController
 {
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): Response
+    public function __construct(
+        private AuthManager $auth,
+    ) {
+    }
+
+    public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return response()->noContent();
+        return new JsonResponse(
+            data: null,
+            status: Response::HTTP_NO_CONTENT,
+        );
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
+        $this->auth->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return response()->noContent();
+        return new JsonResponse(
+            data: null,
+            status: Response::HTTP_NO_CONTENT,
+        );
     }
 }

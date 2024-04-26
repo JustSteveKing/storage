@@ -1,31 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
-class VerifyEmailController extends Controller
+final readonly class VerifyEmailController
 {
-    /**
-     * Mark the authenticated user's email address as verified.
-     */
+    public function __construct(
+        private AuthManager $auth,
+    ) {
+    }
+
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(
-                config('app.frontend_url').'/dashboard?verified=1'
+        if ($this->auth->user()->hasVerifiedEmail()) {
+            return Redirect::intended(
+                default: config('app.frontend_url') . '/dashboard?verified=1'
             );
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($this->auth->user()->markEmailAsVerified()) {
+            event(new Verified($this->auth->user()));
         }
 
-        return redirect()->intended(
-            config('app.frontend_url').'/dashboard?verified=1'
+        return Redirect::intended(
+            default: config('app.frontend_url') . '/dashboard?verified=1'
         );
     }
 }
